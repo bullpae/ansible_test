@@ -1,0 +1,15 @@
+all:
+  hosts:
+    192.168.33.11:
+  
+  children:
+    devServers:
+      hosts:
+        192.168.33.12:
+        192.168.33.13:
+    devSvr1:
+      hosts:
+        192.168.33.12:
+    devSvr2:
+      hosts:
+        192.168.33.13:

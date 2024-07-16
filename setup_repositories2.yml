@@ -1,0 +1,74 @@
+---
+- name: Setup Repositories
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install necessary packages
+      yum:
+        name:
+          - yum-utils
+          - createrepo
+          - httpd
+          - python3
+        state: present
+
+- name: Setup DNF(YUM) Repository
+  hosts: serverA
+  become: yes
+  tasks:
+    - name: Create repository directory
+      file:
+        path: /var/www/html/repos/base
+        state: directory
+
+    - name: Sync base repository
+      command: reposync -g -l -d -m --repoid=base --newest-only --download-metadata --download_path=/var/www/html/repos/base
+
+    - name: Create repository metadata
+      command: createrepo /var/www/html/repos/base
+
+    - name: Ensure httpd is running
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+- name: Setup PyPI Server
+  hosts: serverA
+  become: yes
+  tasks:
+    - name: Install bandersnatch
+      pip:
+        name: bandersnatch
+        state: present
+
+    - name: Create PyPI mirror directory
+      file:
+        path: /var/www/html/pypi
+        state: directory
+
+    - name: Mirror PyPI
+      command: bandersnatch mirror --config /etc/bandersnatch.conf
+
+- name: Configure Offline Server
+  hosts: serverB
+  become: yes
+  tasks:
+    - name: Create YUM repository file
+      copy:
+        dest: /etc/yum.repos.d/offline.repo
+        content: |
+          [offline-repo]
+          name=Offline Repository
+          baseurl=http://{{ hostvars['serverA'].ansible_facts.default_ipv4.address }}/repos/base
+          enabled=1
+          gpgcheck=0
+
+    - name: Create pip configuration
+      copy:
+        dest: /etc/pip.conf
+        content: |
+          [global]
+          index-url = http://{{ hostvars['serverA'].ansible_facts.default_ipv4.address }}/pypi
+          trusted-host = {{ hostvars['serverA'].ansible_facts.default_ipv4.address }}
+
