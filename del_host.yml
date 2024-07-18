@@ -1,0 +1,30 @@
+---
+- name: Remove DNF packages with dependencies
+  hosts: HostSvr
+  become: true
+  tasks:
+    - name: Remove the package and dependencies
+      dnf:
+        name: 
+          - epel-release
+          - yum-utils
+          - createrepo
+          - httpd
+          - ansible
+        state: absent
+        autoremove: yes
+      register: dnf_package_remove
+    
+    - name: Show dnf_package_remove files
+      debug:
+        var: dnf_package_remove
+
+    - name: Ensure the download directory exists
+      file:
+        path: /var/www/html/dnfrepo
+        state: absent
+      register: dnf_file_remove
+
+    - name: Show dnf_file_remove files
+      debug:
+        var: dnf_file_remove

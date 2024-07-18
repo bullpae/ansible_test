@@ -3,20 +3,6 @@
   hosts: HostSvr
   become: true
   tasks:
-    - name: Ensure the download directory exists
-      file:
-        path: /var/www/html/dnfrepo
-        state: directory
-        mode: '0755'
-
-    # - name: Check if download directory exists
-    #   stat:
-    #     path: /var/www/html/dnfrepo
-    #   register: dnfrepo_dir
-
-    # - debug:
-    #     var: dnfrepo_dir
-
     - name: Download epel-release
       dnf:
         name: 
@@ -34,15 +20,35 @@
     #     state: present
     #     download_only: yes
     #     download_dir: /var/www/html/dnfrepo
-    #   register: dnf_download
+    #   register: dnf_install
+
+    - name: Install the package and dependencies
+      dnf:
+        name: 
+          - yum-utils
+          - createrepo
+          - httpd
+          - ansible
+        state: present
+      register: dnf_install
+
+    - name: Show dnf_install files
+      debug:
+        var: dnf_install
 
     - name: Download DNF package
-      command: dnf download --resolve --alldeps --downloadonly --downloaddir /var/www/html/dnfrepo yum-utils createrepo httpd ansible
+      command: dnf download --resolve --alldeps --downloaddir /var/www/html/dnfrepo yum-utils createrepo httpd ansible
       register: dnf_download
     
     - name: Show downloaded files
       debug:
         var: dnf_download
+
+    - name: Ensure the download directory exists
+      file:
+        path: /var/www/html/dnfrepo
+        state: directory
+        mode: '0755'
 
     - name: Create DNF repository
       command: createrepo /var/www/html/dnfrepo

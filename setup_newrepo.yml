@@ -26,6 +26,10 @@
     - name: Enable custom repository
       command: yum-config-manager --enable dnfrepo
 
+    # - name: Update Repository cache
+    #   dnf:
+    #     update_cache: yes
+
     - name: Install package
       dnf:
         name:
