@@ -33,7 +33,6 @@
     - name: Install package
       dnf:
         name:
-          - yum-utils
           - createrepo
           - httpd
           - ansible

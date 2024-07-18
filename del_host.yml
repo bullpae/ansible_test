@@ -7,7 +7,6 @@
       dnf:
         name: 
           - epel-release
-          - yum-utils
           - createrepo
           - httpd
           - ansible

@@ -13,7 +13,6 @@
     # - name: Download the package and dependencies
     #   dnf:
     #     name: 
-    #       - yum-utils
     #       - createrepo
     #       - httpd
     #       - ansible
@@ -25,7 +24,6 @@
     - name: Install the package and dependencies
       dnf:
         name: 
-          - yum-utils
           - createrepo
           - httpd
           - ansible
@@ -37,7 +35,7 @@
         var: dnf_install
 
     - name: Download DNF package
-      command: dnf download --resolve --alldeps --downloaddir /var/www/html/dnfrepo yum-utils createrepo httpd ansible
+      command: dnf download --resolve --alldeps --downloaddir /var/www/html/dnfrepo createrepo httpd ansible
       register: dnf_download
     
     - name: Show downloaded files
