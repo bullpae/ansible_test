@@ -46,6 +46,7 @@ CS #2->>CS #2: Install package
 
   - vagrant ssh remote 접속 설정(기본은 접속 안됨!!)
   ```
+  // DevSvr1 ~ 3 모두
   C:\"git clone directory"\vagrant\DevSvr1> vagrant ssh
 
   $ sudo vi /etc/ssh/ssh_config
@@ -76,9 +77,11 @@ $ ansible --version
 
 ### Run Ansible playbook (DevSvr1)
   - DevSvr2 에 dnf local repository 만들기
+     - DevSvr2 실제 폐쇄망일 경우에는 수정필요!!
+     - DevSvr1의 Package 파일을 서비스할 Repository Directory에 복사하여 구축해야함!!!
   ```
   $ cd "git clone directory"
-  $ ansible-playbook -i inventory setup_dnfrepo.yml
+  $ ansible-playbook -i inventory setup_host.yml
   PLAY [...] *************
 
   TASK *******************
