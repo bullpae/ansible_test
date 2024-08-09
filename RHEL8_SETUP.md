@@ -55,6 +55,7 @@
 ### Set up DNF Repository
   - Local DNF Repository 만들기
   ```bash
+  $ sudo dnf install createrepo httpd -y
   $ sudo mkdir /var/www/html/dnfrepo
   $ sudo dnf download --resolve --alldeps --downloaddir /var/www/html/dnfrepo git ansible createrepo httpd
   $ sudo createrepo /var/www/html/dnfrepo/
