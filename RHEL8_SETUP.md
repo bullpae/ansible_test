@@ -58,7 +58,14 @@
   $ sudo mkdir /var/www/html/dnfrepo
   $ sudo dnf download --resolve --downloaddir /var/www/html/dnfrepo git ansible createrepo httpd
   $ sudo createrepo /var/www/html/dnfrepo/
+  $ sudo systemctl enable httpd
   $ sudo systemctl start httpd
+  ```
+  - Open httpd port
+  ```bash
+  $ sudo firewall-cmd --list-all
+  $ sudo firewall-cmd --add-service=http --permanent
+  $ sudo firewall-cmd --reload
   ```
 
   - Set up client server
