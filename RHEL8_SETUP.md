@@ -56,7 +56,7 @@
   - Local DNF Repository 만들기
   ```bash
   $ sudo mkdir /var/www/html/dnfrepo
-  $ sudo dnf download --resolve --downloaddir /var/www/html/dnfrepo git ansible createrepo httpd
+  $ sudo dnf download --resolve --alldeps --downloaddir /var/www/html/dnfrepo git ansible createrepo httpd
   $ sudo createrepo /var/www/html/dnfrepo/
   $ sudo systemctl enable httpd
   $ sudo systemctl start httpd
