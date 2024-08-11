@@ -80,10 +80,12 @@
   gpgcheck=0
   ```
   ```bash
+  $ sudo dnf clean all
   $ sudo yum-config-manager --disable \*
   $ dnf repolist
   $ sudo yum-config-manager --enable rockyrepo
   $ dnf repolist
+  $ sudo dnf makecache
   ```
 
 
